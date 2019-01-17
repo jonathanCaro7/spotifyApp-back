@@ -20,7 +20,7 @@ axios.post(
 
 module.exports = {
 	query: function(req, res) {
-        const offset = req.query.offset || 0;
+        const offset = req.query.page ? (req.query.page - 1) * 12 : 0;
 
         axios.get(
             `https://api.spotify.com/v1/search?${querystring.stringify({ query: req.query.album, type: 'album', limit: 12, offset })}`,
@@ -37,8 +37,9 @@ module.exports = {
                 if (err) console.log(err);
             });
         })
-        .catch((error) => {
-          res.sendStatus(400);
+        .catch((err) => {
+            console.log(err);
+            res.sendStatus(400);
         })
 	}
 };
